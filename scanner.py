@@ -115,7 +115,7 @@ def run_full_scan():
     metadata = {}
 
     # A. Fetch Metadata (Parallel)
-    with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
         future_to_ticker = {executor.submit(fetch_metadata, t): t for t in TICKERS}
         for future in concurrent.futures.as_completed(future_to_ticker):
             t, price, mcap = future.result()
@@ -176,4 +176,5 @@ def run_full_scan():
         except: continue
             
     final_data.sort(key=lambda x: x["mcap"], reverse=True)
+
     return final_data
